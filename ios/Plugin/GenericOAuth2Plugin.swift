@@ -13,6 +13,9 @@ typealias JSObject = [String: Any]
 @objc(GenericOAuth2Plugin)
 public class GenericOAuth2Plugin: CAPPlugin {
 
+    private var pkceCodeVerifier: String?
+    private var pkceCodeChallenge: String?
+
     var savedPluginCall: CAPPluginCall?
 
     let JSON_KEY_ACCESS_TOKEN = "access_token"
@@ -102,6 +105,22 @@ public class GenericOAuth2Plugin: CAPPlugin {
             return
         }
         OAuth2Swift.handle(url: url)
+    }
+
+    @objc func getPkceCodeVerifier(_ call: CAPPluginCall) {
+        if let verifier = self.pkceCodeVerifier {
+            call.resolve(["pkceCodeVerifier": verifier])
+        } else {
+            call.reject("PKCE Code Verifier not available")
+        }
+    }
+
+    @objc func getPkceCodeChallenge(_ call: CAPPluginCall) {
+        if let challenge = self.pkceCodeChallenge {
+            call.resolve(["pkceCodeChallenge": challenge])
+        } else {
+            call.reject("PKCE Code Challenge not available")
+        }
     }
 
     /*
@@ -295,6 +314,9 @@ public class GenericOAuth2Plugin: CAPPlugin {
                 if pkceEnabled {
                     let pkceCodeVerifier = generateRandom(withLength: 64)
                     let pkceCodeChallenge = pkceCodeVerifier.sha256().base64()
+
+                    self.pkceCodeVerifier = pkceCodeVerifier
+                    self.pkceCodeChallenge = pkceCodeChallenge
 
                     oauthSwift.authorize(
                         withCallbackURL: redirectUrl,
@@ -562,6 +584,26 @@ extension String {
             _ = CC_SHA256($0.baseAddress, CC_LONG(data.count), &buffer)
         }
         return Data(buffer)
+    }
+}
+
+extension GenericOAuth2Plugin {
+    @objc func getPkceCodeVerifier(_ call: CAPPluginCall) {
+        if let verifier = self.pkceCodeVerifier {
+            call.resolve(["pkceCodeVerifier": verifier])
+        } else {
+            call.reject("PKCE Code Verifier not available")
+        }
+    }
+}
+
+extension GenericOAuth2Plugin {
+    @objc func getPkceCodeChallenge(_ call: CAPPluginCall) {
+        if let challenge = self.pkceCodeChallenge {
+            call.resolve(["pkceCodeChallenge": challenge])
+        } else {
+            call.reject("PKCE Code Challenge not available")
+        }
     }
 }
 
