@@ -6,6 +6,7 @@ public class OAuth2RefreshTokenOptions {
     private String accessTokenEndpoint;
     private String refreshToken;
     private String scope;
+    private String codeVerifier;
 
     public String getAppId() {
         return appId;
@@ -37,5 +38,13 @@ public class OAuth2RefreshTokenOptions {
 
     public void setScope(String scope) {
         this.scope = scope;
+    }
+
+    public String getCodeVerifier() {
+        return codeVerifier;
+    }
+
+    public void setCodeVerifier(String codeVerifier) {
+        this.codeVerifier = codeVerifier;
     }
 }

@@ -50,7 +50,9 @@ public class GenericOAuth2Plugin extends Plugin {
     private static final String PARAM_ANDROID_HANDLE_RESULT_ON_ACTIVITY_RESULT = "android.handleResultOnActivityResult";
 
     // Refresh token params
-    private static final String PARAM_REFRESH_TOKEN = "refreshToken";
+    private static final String PARAM_REFRESH_TOKEN = "refresh_token";
+    private static final String PARAM_CODE_VERIFIER = "code_verifier";
+    private static final String PARAM_CLIENT_ID = "client_id";
 
     // open id params
     private static final String PARAM_DISPLAY = "display";
@@ -68,6 +70,8 @@ public class GenericOAuth2Plugin extends Plugin {
     private static final String ERR_PARAM_NO_AUTHORIZATION_BASE_URL = "ERR_PARAM_NO_AUTHORIZATION_BASE_URL";
     private static final String ERR_PARAM_NO_REDIRECT_URL = "ERR_PARAM_NO_REDIRECT_URL";
     private static final String ERR_PARAM_NO_RESPONSE_TYPE = "ERR_PARAM_NO_RESPONSE_TYPE";
+    private static final String ERR_PARAM_NO_CODE_VERIFIER = "ERR_PARAM_NO_RESPONSE_TYPE";
+
 
     private static final String ERR_PARAM_NO_ACCESS_TOKEN_ENDPOINT = "ERR_PARAM_NO_ACCESS_TOKEN_ENDPOINT";
     private static final String ERR_PARAM_NO_REFRESH_TOKEN = "ERR_PARAM_NO_REFRESH_TOKEN";
@@ -96,8 +100,8 @@ public class GenericOAuth2Plugin extends Plugin {
         disposeAuthService();
         OAuth2RefreshTokenOptions oAuth2RefreshTokenOptions = buildRefreshTokenOptions(call.getData());
 
-        if (oAuth2RefreshTokenOptions.getAppId() == null) {
-            call.reject(ERR_PARAM_NO_APP_ID);
+        if (oAuth2RefreshTokenOptions.getClientId() == null) {
+            call.reject(ERR_PARAM_NO_CLIENT_ID);
             return;
         }
 
@@ -108,6 +112,11 @@ public class GenericOAuth2Plugin extends Plugin {
 
         if (oAuth2RefreshTokenOptions.getRefreshToken() == null) {
             call.reject(ERR_PARAM_NO_REFRESH_TOKEN);
+            return;
+        }
+
+        if (oAuth2RefreshTokenOptions.getCodeVerifier() == null) {
+            call.reject(ERR_PARAM_NO_CODE_VERIFIER);
             return;
         }
 
@@ -126,6 +135,7 @@ public class GenericOAuth2Plugin extends Plugin {
             .setGrantType(GrantTypeValues.REFRESH_TOKEN)
             .setScope(oAuth2RefreshTokenOptions.getScope())
             .setRefreshToken(oAuth2RefreshTokenOptions.getRefreshToken())
+            .setCodeVerifier(oAuth2RefreshTokenOptions.getCodeVerifier())
             .build();
 
         this.authService.performTokenRequest(
@@ -550,12 +560,12 @@ public class GenericOAuth2Plugin extends Plugin {
 
     OAuth2RefreshTokenOptions buildRefreshTokenOptions(JSObject callData) {
         OAuth2RefreshTokenOptions o = new OAuth2RefreshTokenOptions();
-        o.setAppId(ConfigUtils.trimToNull(ConfigUtils.getOverwrittenAndroidParam(String.class, callData, PARAM_APP_ID)));
+        o.setClientId(ConfigUtils.trimToNull(ConfigUtils.getOverwrittenAndroidParam(String.class, callData, PARAM_CLIENT_ID)));
         o.setAccessTokenEndpoint(
             ConfigUtils.trimToNull(ConfigUtils.getOverwrittenAndroidParam(String.class, callData, PARAM_ACCESS_TOKEN_ENDPOINT))
         );
-        o.setScope(ConfigUtils.trimToNull(ConfigUtils.getOverwrittenAndroidParam(String.class, callData, PARAM_SCOPE)));
         o.setRefreshToken(ConfigUtils.trimToNull(ConfigUtils.getOverwrittenAndroidParam(String.class, callData, PARAM_REFRESH_TOKEN)));
+        o.setCodeVerifier(ConfigUtils.trimToNull(ConfigUtils.getOverwrittenAndroidParam(String.class, callData, PARAM_CODE_VERIFIER)));
         return o;
     }
 

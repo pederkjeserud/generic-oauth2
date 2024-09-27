@@ -22,7 +22,7 @@ public class GenericOAuth2Plugin: CAPPlugin {
     let JSON_KEY_AUTHORIZATION_RESPONSE = "authorization_response"
     let JSON_KEY_ACCESS_TOKEN_RESPONSE = "access_token_response"
 
-    let PARAM_REFRESH_TOKEN = "refreshToken"
+    let PARAM_REFRESH_TOKEN = "refresh_token"
 
     // required
     let PARAM_APP_ID = "appId"
@@ -47,12 +47,14 @@ public class GenericOAuth2Plugin: CAPPlugin {
 
     // authenticate param validation
     let ERR_PARAM_NO_APP_ID = "ERR_PARAM_NO_APP_ID"
+    let ERR_PARAM_NO_APP_ID = "ERR_PARAM_NO_CLIENT_ID"
     let ERR_PARAM_NO_AUTHORIZATION_BASE_URL = "ERR_PARAM_NO_AUTHORIZATION_BASE_URL"
     let ERR_PARAM_NO_RESPONSE_TYPE = "ERR_PARAM_NO_RESPONSE_TYPE"
     let ERR_PARAM_NO_REDIRECT_URL = "ERR_PARAM_NO_REDIRECT_URL"
 
     // refreshToken param validation
     let ERR_PARAM_NO_REFRESH_TOKEN = "ERR_PARAM_NO_REFRESH_TOKEN"
+    let ERR_PARAM_NO_CODE_VERIFIER = "ERR_PARAM_NO_CODE_VERIFIER"
     let ERR_PARAM_NO_ACCESS_TOKEN_ENDPOINT = "ERR_PARAM_NO_ACCESS_TOKEN_ENDPOINT"
 
     let ERR_CUSTOM_HANDLER_LOGIN = "ERR_CUSTOM_HANDLER_LOGIN"
