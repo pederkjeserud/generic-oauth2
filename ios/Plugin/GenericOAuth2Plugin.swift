@@ -47,7 +47,7 @@ public class GenericOAuth2Plugin: CAPPlugin {
 
     // authenticate param validation
     let ERR_PARAM_NO_APP_ID = "ERR_PARAM_NO_APP_ID"
-    let ERR_PARAM_NO_APP_ID = "ERR_PARAM_NO_CLIENT_ID"
+    let ERR_PARAM_NO_CLIENT_ID = "ERR_PARAM_NO_CLIENT_ID"
     let ERR_PARAM_NO_AUTHORIZATION_BASE_URL = "ERR_PARAM_NO_AUTHORIZATION_BASE_URL"
     let ERR_PARAM_NO_RESPONSE_TYPE = "ERR_PARAM_NO_RESPONSE_TYPE"
     let ERR_PARAM_NO_REDIRECT_URL = "ERR_PARAM_NO_REDIRECT_URL"
@@ -107,22 +107,6 @@ public class GenericOAuth2Plugin: CAPPlugin {
             return
         }
         OAuth2Swift.handle(url: url)
-    }
-
-    @objc func getPkceCodeVerifier(_ call: CAPPluginCall) {
-        if let verifier = self.pkceCodeVerifier {
-            call.resolve(["pkceCodeVerifier": verifier])
-        } else {
-            call.reject("PKCE Code Verifier not available")
-        }
-    }
-
-    @objc func getPkceCodeChallenge(_ call: CAPPluginCall) {
-        if let challenge = self.pkceCodeChallenge {
-            call.resolve(["pkceCodeChallenge": challenge])
-        } else {
-            call.reject("PKCE Code Challenge not available")
-        }
     }
 
     /*

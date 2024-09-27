@@ -42,7 +42,7 @@ export interface OAuth2RefreshTokenOptions {
   /**
    * The app id (client id) you get from the oauth provider like Google, Facebook,...
    */
-  appId: string;
+  client_id: string;
   /**
    * Url for retrieving the access_token.
    */
@@ -55,6 +55,8 @@ export interface OAuth2RefreshTokenOptions {
    * A space-delimited list of permissions that identify the resources that your application could access on the user's behalf.
    */
   scope?: string;
+
+  codeVerifier?: string;
 }
 
 export interface OAuth2AuthenticateBaseOptions {
