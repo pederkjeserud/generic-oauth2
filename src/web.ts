@@ -3,7 +3,6 @@ import { WebPlugin } from '@capacitor/core';
 import type {
   OAuth2AuthenticateOptions,
   GenericOAuth2Plugin,
-  OAuth2RefreshTokenOptions,
   ImplicitFlowRedirectOptions,
 } from './definitions';
 import type { WebOptions } from './web-utils';
