@@ -42,7 +42,7 @@ export interface OAuth2RefreshTokenOptions {
   /**
    * The app id (client id) you get from the oauth provider like Google, Facebook,...
    */
-  client_id: string;
+  appId: string;
   /**
    * Url for retrieving the access_token.
    */

@@ -49,7 +49,7 @@ export class GenericOAuth2Web extends WebPlugin implements GenericOAuth2Plugin {
         params.append('grant_type', 'refresh_token');
         params.append('refresh_token', options.refreshToken);
         params.append('client_id', options.clientId);
-        params.append('code_verifier', WebUtils.getCodeVerifier() || '');
+        params.append('code_verifier', this.webOptions.pkceCodeVerifier || '');
         if (options.clientSecret) {
             params.append('client_secret', options.clientSecret);
         }
