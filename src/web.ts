@@ -45,11 +45,14 @@ export class GenericOAuth2Web extends WebPlugin implements GenericOAuth2Plugin {
         tokenRequest.setRequestHeader('accept', 'application/json');
         tokenRequest.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
 
+        console.log('WebOptions: ' + this.webOptions);
+        console.log('CodeVerifier: ' +  WebUtils.getCodeVerifier());
+
         const params = new URLSearchParams();
         params.append('grant_type', 'refresh_token');
         params.append('refresh_token', options.refreshToken);
         params.append('client_id', options.clientId);
-        params.append('code_verifier', this.webOptions.pkceCodeVerifier || '');
+        params.append('code_verifier', WebUtils.getCodeVerifier()|| '');
         if (options.clientSecret) {
             params.append('client_secret', options.clientSecret);
         }
@@ -214,7 +217,7 @@ export class GenericOAuth2Web extends WebPlugin implements GenericOAuth2Plugin {
   ) {
     const tokenRequest = new XMLHttpRequest();
     tokenRequest.onload = () => {
-      WebUtils.clearCodeVerifier();
+      // WebUtils.clearCodeVerifier();
       if (tokenRequest.status === 200) {
         const accessTokenResponse = JSON.parse(tokenRequest.response);
         if (this.webOptions.logsEnabled) {
