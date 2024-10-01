@@ -417,7 +417,7 @@ public class GenericOAuth2Plugin: CAPPlugin {
             } else if let responseData = response?.data {
                 do {
                     var jsonObj = JSObject()
-                    let accessTokenJsObject = try? JSONSerialization.jsonObject(with: responseData, options: []) as? JSObject
+                    let accessTokenJsObject = try JSONSerialization.jsonObject(with: responseData, options: []) as? JSObject
                     jsonObj.updateValue(accessTokenJsObject!, forKey: self.JSON_KEY_ACCESS_TOKEN_RESPONSE)
 
                     if logsEnabled {
@@ -672,7 +672,7 @@ extension GenericOAuth2Plugin: ASAuthorizationControllerDelegate {
         case .failed:
             self.log("SIWA: Error.failed")
             self.savedPluginCall?.reject(self.ERR_AUTHORIZATION_FAILED)
-        @unknown default:
+        default:
             self.log("SIWA: Error.default")
             self.savedPluginCall?.reject(self.ERR_GENERAL)
         }
