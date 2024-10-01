@@ -22,12 +22,6 @@ export class GenericOAuth2Web extends WebPlugin implements GenericOAuth2Plugin {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async refreshToken(options: any) {
     return new Promise((resolve, reject) => {
-        // const refreshToken = localStorage.getItem('refreshToken');
-        // if (!refreshToken) {
-        //     reject(new Error('No refresh token available'));
-        //     return;
-        // }
-
         const tokenRequest = new XMLHttpRequest();
         tokenRequest.onload = () => {
             if (tokenRequest.status === 200) {
@@ -40,14 +34,9 @@ export class GenericOAuth2Web extends WebPlugin implements GenericOAuth2Plugin {
         tokenRequest.onerror = () => {
             reject(new Error('Network error'));
         };
-
         tokenRequest.open('POST', options.accessTokenEndpoint, true);
         tokenRequest.setRequestHeader('accept', 'application/json');
         tokenRequest.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
-
-        console.log('WebOptions: ' + this.webOptions);
-        console.log('CodeVerifier: ' +  WebUtils.getCodeVerifier());
-
         const params = new URLSearchParams();
         params.append('grant_type', 'refresh_token');
         params.append('refresh_token', options.refreshToken);
@@ -56,10 +45,9 @@ export class GenericOAuth2Web extends WebPlugin implements GenericOAuth2Plugin {
         if (options.clientSecret) {
             params.append('client_secret', options.clientSecret);
         }
-
         tokenRequest.send(params.toString());
     });
-}
+  }
 
   async redirectFlowCodeListener(
     options: ImplicitFlowRedirectOptions,

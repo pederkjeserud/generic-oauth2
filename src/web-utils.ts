@@ -75,7 +75,7 @@ export class WebUtils {
 
   static setCodeVerifier(code: string): boolean {
     try {
-      window.sessionStorage.setItem(`I_Capacitor_GenericOAuth2Plugin_PKCE`, code);
+      window.localStorage.setItem(`I_Capacitor_GenericOAuth2Plugin_PKCE`, code);
       return true;
     } catch (err) {
       return false;
@@ -83,11 +83,11 @@ export class WebUtils {
   }
 
   static clearCodeVerifier(): void {
-    window.sessionStorage.removeItem(`I_Capacitor_GenericOAuth2Plugin_PKCE`);
+    window.localStorage.removeItem(`I_Capacitor_GenericOAuth2Plugin_PKCE`);
   }
 
   static getCodeVerifier(): string | null {
-    return window.sessionStorage.getItem(`I_Capacitor_GenericOAuth2Plugin_PKCE`);
+    return window.localStorage.getItem(`I_Capacitor_GenericOAuth2Plugin_PKCE`);
   }
 
   /**

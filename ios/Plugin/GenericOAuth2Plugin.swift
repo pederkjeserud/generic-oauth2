@@ -22,8 +22,6 @@ public class GenericOAuth2Plugin: CAPPlugin {
     let JSON_KEY_AUTHORIZATION_RESPONSE = "authorization_response"
     let JSON_KEY_ACCESS_TOKEN_RESPONSE = "access_token_response"
 
-    let PARAM_REFRESH_TOKEN = "refresh_token"
-
     // required
     let PARAM_APP_ID = "appId"
     let PARAM_AUTHORIZATION_BASE_URL = "authorizationBaseUrl"
@@ -33,7 +31,7 @@ public class GenericOAuth2Plugin: CAPPlugin {
     let PARAM_ACCESS_TOKEN_ENDPOINT = "accessTokenEndpoint"
     let PARAM_RESOURCE_URL = "resourceUrl"
     let PARAM_ADDITIONAL_RESOURCE_HEADERS = "additionalResourceHeaders"
-
+    let PARAM_REFRESH_TOKEN = "refreshToken"
     let PARAM_ADDITIONAL_PARAMETERS = "additionalParameters"
     let PARAM_CUSTOM_HANDLER_CLASS = "ios.customHandlerClass"
     let PARAM_SCOPE = "scope"
@@ -143,6 +141,10 @@ public class GenericOAuth2Plugin: CAPPlugin {
 
         if scope != nil {
             parameters["scope"] = scope
+        }
+
+        if let pkceCodeVerifier = self.pkceCodeVerifier {
+            parameters["code_verifier"] = pkceCodeVerifier
         }
 
         oauthSwift.renewAccessToken(withRefreshToken: refreshToken, parameters: parameters) { result in
@@ -570,26 +572,6 @@ extension String {
             _ = CC_SHA256($0.baseAddress, CC_LONG(data.count), &buffer)
         }
         return Data(buffer)
-    }
-}
-
-extension GenericOAuth2Plugin {
-    @objc func getPkceCodeVerifier(_ call: CAPPluginCall) {
-        if let verifier = self.pkceCodeVerifier {
-            call.resolve(["pkceCodeVerifier": verifier])
-        } else {
-            call.reject("PKCE Code Verifier not available")
-        }
-    }
-}
-
-extension GenericOAuth2Plugin {
-    @objc func getPkceCodeChallenge(_ call: CAPPluginCall) {
-        if let challenge = self.pkceCodeChallenge {
-            call.resolve(["pkceCodeChallenge": challenge])
-        } else {
-            call.reject("PKCE Code Challenge not available")
-        }
     }
 }
 
